@@ -7,30 +7,25 @@ function handleInput(event) {
 
   console.log(event);
   data[event.target.name] = event.target.value;
-  // const formData = new FormData(event.currentTarget);
-
-  // for (const [key, value] of formData) {
-  //   data[key] = value;
-  // }
 
   localStorage.setItem('feedback-form-state', JSON.stringify(data));
-  // console.log(data);
 }
 
 function getSavedValue() {
-  const savedData =
-    JSON.parse(localStorage.getItem('feedback-form-state')) || {};
+  try {
+    const savedData =
+      JSON.parse(localStorage.getItem('feedback-form-state')) || {};
 
-  for (const element of formEl.elements) {
-    if (savedData[element.name]) {
-      element.value = savedData[element.name];
+    for (const element of formEl.elements) {
+      if (savedData[element.name]) {
+        element.value = savedData[element.name];
+      }
     }
+  } catch (error) {
+    console.log(error.name);
+    console.log(error.message);
   }
 }
-
-// const onRenovate = throttle(({ seconds }) => {
-//   localStorage.setItem('feedback-form-state', seconds);
-// }, 500);
 
 function handleSubmit(event) {
   event.preventDefault();
@@ -42,3 +37,4 @@ function handleSubmit(event) {
 
 formEl.addEventListener('input', throttle(handleInput, 500));
 formEl.addEventListener('submit', handleSubmit);
+getSavedValue();
