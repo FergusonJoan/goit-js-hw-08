@@ -1,20 +1,20 @@
 import throttle from 'lodash.throttle';
 
 const formEl = document.querySelector('.feedback-form');
+const FORM_STORAGE_KEY = 'feedback-form-state';
 let data = {};
 function handleInput(event) {
   event.preventDefault();
 
-  console.log(event);
+  // console.log(event);
   data[event.target.name] = event.target.value;
 
-  localStorage.setItem('feedback-form-state', JSON.stringify(data));
+  localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(data));
 }
 
 function getSavedValue() {
   try {
-    const savedData =
-      JSON.parse(localStorage.getItem('feedback-form-state')) || {};
+    const savedData = JSON.parse(localStorage.getItem(FORM_STORAGE_KEY)) || {};
 
     for (const element of formEl.elements) {
       if (savedData[element.name]) {
@@ -30,7 +30,7 @@ function getSavedValue() {
 function handleSubmit(event) {
   event.preventDefault();
 
-  localStorage.removeItem('feedback-form-state');
+  localStorage.removeItem(FORM_STORAGE_KEY);
 
   formEl.reset();
 }
